@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>noisy-circle</title>
+    <style>
+        #circle {
+            margin: 200px 200px;
+        }
+
+        #circle > div {
+            position: absolute;
+            background-color: green;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div id="circle"></div>
+</body>
+<script>
+    while(!document.getElementById('circle')) {
+
+    }
+
+    const circle = document.getElementById('circle');
+
+    let timer = 0;
+    let scale = 1;
+    let posX = 0;
+    let posY = 0;
+    let direction = 1;
+
+    const multiplier = 200;
+    const amount = 50;
+
+    const config = [];
+
+    for (let i = 0; i < amount; i += 1) {
+        const manipulator = document.createElement('DIV');
+
+        circle.appendChild(manipulator);
+
+        config.push({
+            randomOffset: Math.random() * 0.5,
+            randomOffsetScale: Math.random() * 0.5,
+        });
+    }
+
+    const handleTick = () => {
+        timer += 0.01;
+
+        for (let i = 0; i < amount; i += 1) {
+            posX = Math.sin(timer * (i * 0.2)) * multiplier + i * 10;
+            // posY = Math.cos(timer) * multiplier + i * 4;
+            // posY = i * 10;
+            posY = Math.cos(timer * (i * 0.2)) * multiplier + i * 10;
+            // scale = Math.abs(Math.sin(timer) * Math.cos(timer * 0.3) + Math.cos(timer * 0.3));
+
+            circle.childNodes[i].style.transform = `translate3d(${posX}px, ${posY}px, 0) scale(${1}`;
+            circle.childNodes[i].style.backgroundColor = `rgb(${i * (Math.sin(timer) * 1.5) + 40}, ${i * (Math.sin(timer) * 3) + 80}, ${i * 3})`;
+        }
+
+        requestAnimationFrame(handleTick);
+    }
+
+    requestAnimationFrame(handleTick);
+    </script>
+</html>
