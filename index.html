@@ -7,10 +7,13 @@
     <title>noisy-circle</title>
     <style>
         #circle {
-            margin: 200px 200px;
+            margin: 300px 300px;
         }
 
         #circle > div {
+            /* border: 1px solid black; */
+            transform-origin: center center;
+            opacity: 0.1;
             position: absolute;
             background-color: green;
             width: 100px;
@@ -40,10 +43,16 @@
 
     const config = [];
 
+    const lerp = (start, end, value) => start + value * (end - start);
+
     for (let i = 0; i < amount; i += 1) {
         const manipulator = document.createElement('DIV');
 
-        circle.appendChild(manipulator);
+        const node = circle.appendChild(manipulator);
+        node.style.width = `${i + amount / 2}px`;
+        node.style.height = `${i + amount / 2}px`;
+
+        // node.style.transform = `scale(${lerp(0.1, 0.2, i)})`;
 
         config.push({
             randomOffset: Math.random() * 0.5,
@@ -55,14 +64,11 @@
         timer += 0.01;
 
         for (let i = 0; i < amount; i += 1) {
-            posX = Math.sin(timer * (i * 0.2)) * multiplier + i * 10;
-            // posY = Math.cos(timer) * multiplier + i * 4;
-            // posY = i * 10;
-            posY = Math.cos(timer * (i * 0.2)) * multiplier + i * 10;
-            // scale = Math.abs(Math.sin(timer) * Math.cos(timer * 0.3) + Math.cos(timer * 0.3));
+            posX = Math.sin(timer * (i * 0.1)) * multiplier * Math.cos(timer);
+            posY = Math.cos(timer * (i * 0.1)) * multiplier * Math.sin(timer);
 
-            circle.childNodes[i].style.transform = `translate3d(${posX}px, ${posY}px, 0) scale(${1}`;
-            circle.childNodes[i].style.backgroundColor = `rgb(${i * (Math.sin(timer) * 1.5) + 40}, ${i * (Math.sin(timer) * 3) + 80}, ${i * 3})`;
+            circle.childNodes[i].style.transform = `translate3d(${posX}px, ${posY}px, 0) scale(${i * 0.004 + 0.4 + Math.sin(timer * 0.5)})`;
+            circle.childNodes[i].style.backgroundColor = `rgb(${i * (Math.sin(timer) * 1.5) + 40}, ${i * (Math.sin(timer)) + 80}, ${i * 0.3})`;
         }
 
         requestAnimationFrame(handleTick);
