@@ -7,18 +7,19 @@
     <title>noisy-circle</title>
     <style>
         #circle {
-            margin: 300px 300px;
+            margin: 400px 10px;
         }
 
         #circle > div {
-            /* border: 1px solid black; */
+            border: 1px solid black;
             transform-origin: center center;
             opacity: 0.1;
             position: absolute;
-            background-color: green;
+            /* background-color: green; */
             width: 100px;
             height: 100px;
             border-radius: 50%;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -39,7 +40,7 @@
     let direction = 1;
 
     const multiplier = 200;
-    const amount = 50;
+    const amount = 500;
 
     const config = [];
 
@@ -49,26 +50,48 @@
         const manipulator = document.createElement('DIV');
 
         const node = circle.appendChild(manipulator);
-        node.style.width = `${i + amount / 2}px`;
-        node.style.height = `${i + amount / 2}px`;
+
+
+        // node.style.width = `${i + amount / 2}px`;
+        // node.style.height = `${i + amount / 2}px`;
 
         // node.style.transform = `scale(${lerp(0.1, 0.2, i)})`;
 
-        config.push({
-            randomOffset: Math.random() * 0.5,
-            randomOffsetScale: Math.random() * 0.5,
-        });
+        // config.push({
+        //     randomOffset: Math.random() * 0.5,
+        //     randomOffsetScale: Math.random() * 0.5,
+        // });
     }
 
     const handleTick = () => {
         timer += 0.01;
 
-        for (let i = 0; i < amount; i += 1) {
-            posX = Math.sin(timer * (i * 0.1)) * multiplier * Math.cos(timer);
-            posY = Math.cos(timer * (i * 0.1)) * multiplier * Math.sin(timer);
+        let divCounter = 0;
+
+        for (let x = 1; x < 2; x += 1) {
+            for (let y = 0; y < amount; y += 1) {
+                // posX = Math.sin(timer * 0.5) * 5 * y;
+                posX = 2 * y;
+                posY = 1;
+                // posY = Math.cos(timer * (Math.sin(y) * 10))
+                // posY = Math.cos(timer * (y * 0.01)) * Math.sin(timer) * 40;
+                // posY = Math.cos(timer + y * 3) * (y * 0.7) ;
+                // posY = Math.cos(timer) * 0.2 * Math.cos(timer + y * 3) * 5 * y;
+
+                scale = Math.sin(timer) * 2;
+
+                circle.childNodes[divCounter].style.transform = `translate3d(${posX}px, ${posY}px, 0) scale(${scale}, ${scale})`;
+                // circle.childNodes[divCounter].style.borderColor = `hsl(${Math.sin(timer * y * 0.1) * 30}, 100%, 50%)`;
+                divCounter += 1;
+            }
+
+            /*
+            posX = Math.sin(timer * (i * 0.1)) * multiplier * Math.sin(timer);
+            posY = Math.cos(timer * (i * 0.1)) * multiplier * Math.cos(timer);
 
             circle.childNodes[i].style.transform = `translate3d(${posX}px, ${posY}px, 0) scale(${i * 0.004 + 0.4 + Math.sin(timer * 0.5)})`;
             circle.childNodes[i].style.backgroundColor = `rgb(${i * (Math.sin(timer) * 1.5) + 40}, ${i * (Math.sin(timer)) + 80}, ${i * 0.3})`;
+            */
         }
 
         requestAnimationFrame(handleTick);
